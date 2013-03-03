@@ -56,7 +56,7 @@ if __name__ == '__main__':
         with open(ofile_fn, 'w') as f:
             f.write(code)
 
-        cmd = ['gfortran', ofile_fn ]
+        cmd = ['gfortran', '-g', '-Wall', ofile_fn ]
         p = subprocess.Popen(cmd)
         p.wait()
 
