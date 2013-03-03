@@ -57,10 +57,11 @@ if __name__ == '__main__':
             f.write(code)
 
         cmd = ['gfortran', '-g', '-Wall', ofile_fn ]
-        p = subprocess.Popen(cmd)
-        p.wait()
-
-        cmd = ['./a.out']
-        p = subprocess.Popen(cmd)
-        p.wait()
+        ret = subprocess.call(cmd)
+        if ret == 0:
+            cmd = ['./a.out']
+            try:
+                ret = subprocess.call(cmd)
+            except:
+                pass
 
