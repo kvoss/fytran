@@ -4,6 +4,8 @@ Author: Krzysztof Voss kmv633@mail.usask.ca
 
 from string import Template
 import subprocess
+import readline
+import sys
 
 with open('template.tpl', 'r') as f:
     tpl = Template(f.read())
@@ -18,7 +20,7 @@ def process():
     return tpl_txt
 
 def help_me():
-    print 'available: Fortran/eval/clear/help'
+    print 'available: Fortran/!eval (also !!)/!clear/!list/!help/!quit'
 
 if __name__ == '__main__':
 
@@ -28,14 +30,20 @@ if __name__ == '__main__':
     while True:
         while True:
             line = raw_input('>>> ')
-            if line == 'eval':
+            if line == '!eval' or line == '!!':
                 break
-            elif line == 'clear':
+            elif line == '!clear':
                 stmts = []
-            elif line == 'help':
+            elif line == '!list':
+                for s in stmts:
+                    print s
+            elif line == '!help':
                 help_me()
+            elif line == '!quit':
+                sys.exit(0)
             else:
                 stmts.append(' '*6 + line)
+
         code = process()
         with open(ofile_fn, 'w') as f:
             f.write(code)
