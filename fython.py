@@ -29,9 +29,6 @@ def help_me():
 
 if __name__ == '__main__':
 
-    #ss = ['a = 12' , 'b = 22' , 'c = mod(a, b)' , 'print *, c']
-    #stmts.extend(ss)
-
     while True:
         while True:
             line = raw_input('>>> ')
@@ -42,7 +39,7 @@ if __name__ == '__main__':
             elif line == '!l':
                 print_stm()
             elif line == '!d':
-                idx = int(raw_input('!lst idx to delete: '))
+                idx = int(raw_input('!l idx to delete: '))
                 stmts.pop(idx)
                 print_stm()
             elif line == '!h':
