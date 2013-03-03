@@ -25,7 +25,7 @@ def print_stm():
         print idx,':',s
 
 def help_me():
-    print 'available: Fortran/!eval (also !!)/!clear/!del/!lst/!help/!quit'
+    print 'available: Fortran/!e (also !!)/!c/!d/!l/!h/!q'
 
 if __name__ == '__main__':
 
@@ -35,19 +35,19 @@ if __name__ == '__main__':
     while True:
         while True:
             line = raw_input('>>> ')
-            if line == '!eval' or line == '!!':
+            if line == '!e' or line == '!!':
                 break
-            elif line == '!clear':
+            elif line == '!c':
                 stmts = []
-            elif line == '!lst':
+            elif line == '!l':
                 print_stm()
-            elif line == '!del':
+            elif line == '!d':
                 idx = int(raw_input('!lst idx to delete: '))
                 stmts.pop(idx)
                 print_stm()
-            elif line == '!help':
+            elif line == '!h':
                 help_me()
-            elif line == '!quit':
+            elif line == '!q':
                 sys.exit(0)
             else:
                 stmts.append(' '*6 + line)
