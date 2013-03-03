@@ -1,3 +1,4 @@
+#!/usr/bin/python
 """
 Author: Krzysztof Voss kmv633@mail.usask.ca
 """
@@ -19,8 +20,12 @@ def process():
     })
     return tpl_txt
 
+def print_stm():
+    for idx, s in zip(range(len(stmts)), stmts):
+        print idx,':',s
+
 def help_me():
-    print 'available: Fortran/!eval (also !!)/!clear/!list/!help/!quit'
+    print 'available: Fortran/!eval (also !!)/!clear/!del/!lst/!help/!quit'
 
 if __name__ == '__main__':
 
@@ -34,9 +39,12 @@ if __name__ == '__main__':
                 break
             elif line == '!clear':
                 stmts = []
-            elif line == '!list':
-                for s in stmts:
-                    print s
+            elif line == '!lst':
+                print_stm()
+            elif line == '!del':
+                idx = int(raw_input('!lst idx to delete: '))
+                stmts.pop(idx)
+                print_stm()
             elif line == '!help':
                 help_me()
             elif line == '!quit':
