@@ -8,7 +8,7 @@ import subprocess
 import readline
 import sys
 
-with open('template.tpl', 'r') as f:
+with open('templates/program_test.tpl', 'r') as f:
     tpl = Template(f.read())
 ofile_fn = 'output.f'
 stmts = []
