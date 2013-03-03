@@ -1,6 +1,6 @@
 #!/usr/bin/python
 """
-Author: Krzysztof Voss kmv633@mail.usask.ca
+Author: Krzysztof Voss <shobbo@gmail.com>
 """
 
 from string import Template
