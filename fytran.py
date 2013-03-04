@@ -47,7 +47,8 @@ if __name__ == '__main__':
             elif line == '!l':
                 print_stm()
             elif line == '!d':
-                idx = int(raw_input('!l idx to delete: '))
+                print_stm()
+                idx = int(raw_input('idx to delete: '))
                 stmts.pop(idx)
                 print_stm()
             elif line == '!h':
