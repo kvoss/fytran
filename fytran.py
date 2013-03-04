@@ -8,8 +8,16 @@ import subprocess
 import readline
 import sys
 
-with open('templates/program_test.tpl', 'r') as f:
-    tpl = Template(f.read())
+program_tpl = """\
+      program test
+      implicit real*8 (a-h, o-z)
+ 
+${statements}
+ 
+      end program
+"""
+
+tpl = Template(program_tpl)
 ofile_fn = 'output.f'
 stmts = []
 
@@ -52,7 +60,6 @@ if __name__ == '__main__':
         code = process()
         with open(ofile_fn, 'w') as f:
             f.write(code)
-
         cmd = ['gfortran', '-g', '-Wall', ofile_fn ]
         ret = subprocess.call(cmd)
         if ret == 0:
