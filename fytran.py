@@ -57,6 +57,7 @@ if __name__ == '__main__':
                 sys.exit(0)
             else:
                 stmts.append(' '*6 + line)
+                break
 
         code = process()
         with open(ofile_fn, 'w') as f:
