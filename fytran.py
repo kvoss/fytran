@@ -50,7 +50,6 @@ if __name__ == '__main__':
                 print_stm()
                 idx = int(raw_input('idx to delete: '))
                 stmts.pop(idx)
-                print_stm()
             elif line == '!h':
                 help_me()
             elif line == '!q':
