@@ -62,11 +62,18 @@ if __name__ == '__main__':
         with open(ofile_fn, 'w') as f:
             f.write(code)
         cmd = ['gfortran', '-g', '-Wall', ofile_fn ]
-        ret = call(cmd)
+        try:
+            ret = call(cmd)
+        except OSError as e:
+            print "[!] Problem while running compiler"
+            print "[!] OS error({0}): {1}".format(e.errno, e.strerror)
+            print "[!] Check if gfortran is instaled"
+            exit(1)
+            
         if ret == 0:
             cmd = ['./a.out']
             try:
                 ret = call(cmd)
             except OSError as e:
+                print "Problem with running application"
                 print "[!] OS error({0}): {1}".format(e.errno, e.strerror)
-                exit(1)
