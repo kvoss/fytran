@@ -4,9 +4,9 @@ Author: Krzysztof Voss <shobbo@gmail.com>
 """
 
 from string import Template
-import subprocess
+from subprocess import call
+from sys import exit
 import readline
-import sys
 
 program_tpl = """\
       program test
@@ -53,7 +53,7 @@ if __name__ == '__main__':
             elif line == '!h':
                 help_me()
             elif line == '!q':
-                sys.exit(0)
+                exit(0)
             else:
                 stmts.append(' '*6 + line)
                 break
@@ -62,11 +62,11 @@ if __name__ == '__main__':
         with open(ofile_fn, 'w') as f:
             f.write(code)
         cmd = ['gfortran', '-g', '-Wall', ofile_fn ]
-        ret = subprocess.call(cmd)
+        ret = call(cmd)
         if ret == 0:
             cmd = ['./a.out']
             try:
-                ret = subprocess.call(cmd)
-            except:
-                pass
-
+                ret = call(cmd)
+            except OSError as e:
+                print "[!] OS error({0}): {1}".format(e.errno, e.strerror)
+                exit(1)
