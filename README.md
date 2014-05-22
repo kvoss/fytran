@@ -1,33 +1,40 @@
 Simple Fortran interface
 ========================
 
-I wrote it, because as a beginner Fortran developer, I was often puzzled with
+A beginner Fortran developer is often puzzled with
 the correct syntax of Fortran statements.
+They just never stop surprising.
 
-Writing a lot of simple program often can be tedious and this script solves it
-nicely for me.
+Writing little simple programs often can be helful but tedious.
+This script simplifies this process.
+It maintains a list of FORTRAN statements, and:
+* generates FORTRAN source file from a template
+* compiles the file
+* runs the file and display its output
+* returns to the prompt
 
-Usage
------
 
-After running the command:
+Example
+-------
 
-    ./fytran
-
-, a prompt is displayed.
-
-On the prompt you enter either a Fortran expression or a command.
-
-Available commands:
-
-    !e OR !! - compile and execute expressions in a list
-    !l       - print the list of expressions
+    $ ./fytran
+    !e OR !! - compile and execute expressions
+    !l       - print expressions
     !d       - delete an expressions
-    !c       - clear the entire list of expressions
-    !q       - quit the application
+    !c       - clear the list of expressions
+    !q       - quit
+    >>> dimension a(5)
+    >>> dimension b(5)
+    >>> a = [1, 2, 3, 4, 5]
+    >>> b = [5, 4, 3, 2, 1]
+    >>> print *, a * b
+    >>> !!
+        5.0000000000000000        8.0000000000000000        9.0000000000000000        8.0000000000000000        5.0000000000000000     
 
 
-Fortran uses:
+
+Remarks
+-------
+The FORTRAN template uses:
 
     implicit real*8 (a-h, o-z)
-
