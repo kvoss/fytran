@@ -8,6 +8,16 @@ from subprocess import call
 from sys import exit
 import readline
 
+
+COMPILER = ['gfortran', '-g', '-Wall']
+
+CMDS = """!e OR !! - compile and execute expressions
+!l       - print expressions
+!d       - delete an expressions
+!c       - clear the list of expressions
+!q       - quit"""
+
+
 program_tpl = """\
       program test
       implicit real*8 (a-h, o-z)
@@ -16,7 +26,6 @@ ${statements}
  
       end program
 """
-
 tpl = Template(program_tpl)
 ofile_fn = 'output.f'
 stmts = []
@@ -33,10 +42,11 @@ def print_stm():
         print idx,':',s
 
 def help_me():
-    print 'available: Fortran/!e (also !!)/!c/!d/!l/!h/!q'
+    print 'available: Fortran/!!/!c/!d/!l/!h/!q'
 
-if __name__ == '__main__':
 
+def main():
+    print CMDS
     while True:
         while True:
             line = raw_input('>>> ')
@@ -56,18 +66,16 @@ if __name__ == '__main__':
                 exit(0)
             else:
                 stmts.append(' '*6 + line)
-                break
 
         code = process()
         with open(ofile_fn, 'w') as f:
             f.write(code)
-        cmd = ['gfortran', '-g', '-Wall', ofile_fn ]
         try:
-            ret = call(cmd)
+            ret = call(COMPILER + list(ofile_fn))
         except OSError as e:
             print "[!] Problem while running compiler"
             print "[!] OS error({0}): {1}".format(e.errno, e.strerror)
-            print "[!] Check if gfortran is instaled"
+            print "[!] Check if {0} is instaled".format(COMPILER[0])
             exit(1)
             
         if ret == 0:
@@ -77,3 +85,7 @@ if __name__ == '__main__':
             except OSError as e:
                 print "Problem with running application"
                 print "[!] OS error({0}): {1}".format(e.errno, e.strerror)
+
+
+if __name__ == '__main__':
+    main()
