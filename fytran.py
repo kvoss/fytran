@@ -9,77 +9,49 @@ from sys import exit
 import readline
 
 
-COMPILER = ['gfortran', '-g', '-Wall']
-
-CMDS = """!e OR !! - compile and execute expressions
-!l       - print expressions
-!d       - delete an expressions
-!c       - clear the list of expressions
-!q       - quit"""
-
-
-program_tpl = """\
+class FortranTemplate(Template):
+    program_tpl = """\
       program test
       implicit real*8 (a-h, o-z)
  
-${statements}
+      ${statements}
  
       end program
 """
-tpl = Template(program_tpl)
-ofile_fn = 'output.f'
-stmts = []
 
-def process():
-    stmts_txt = '\n'.join(stmts)
-    tpl_txt = tpl.substitute({
-        'statements' : stmts_txt,
-    })
-    return tpl_txt
+    def __init__(self, stmts):
+        Template.__init__(self, self.program_tpl)
+        self.stmts = stmts
 
-def print_stm():
-    for idx, s in zip(range(len(stmts)), stmts):
-        print idx,':',s
+    def __str__(self):
+        stmts_txt = '\n      '.join(self.stmts)
+        tpl_txt = self.substitute({ 'statements' : stmts_txt, })
+        return tpl_txt
 
-def help_me():
-    print 'available: Fortran/!!/!c/!d/!l/!h/!q'
+COMPILER = ['gfortran', '-g', '-Wall']
+class Source:
+    src_fn = 'fytran.f'
+    def __init__(self, stmts):
+        self.src = str(FortranTemplate(stmts))
 
+    def _write(self):
+        with open(self.src_fn, 'w') as f:
+            f.write(self.src)
 
-def main():
-    print CMDS
-    while True:
-        while True:
-            line = raw_input('>>> ')
-            if line == '!e' or line == '!!':
-                break
-            elif line == '!c':
-                stmts = []
-            elif line == '!l':
-                print_stm()
-            elif line == '!d':
-                print_stm()
-                idx = int(raw_input('idx to delete: '))
-                stmts.pop(idx)
-            elif line == '!h':
-                help_me()
-            elif line == '!q':
-                exit(0)
-            else:
-                stmts.append(' '*6 + line)
-
-        code = process()
-        with open(ofile_fn, 'w') as f:
-            f.write(code)
+    def _compile(self):
         try:
-            ret = call(COMPILER + list(ofile_fn))
+            ret = call(COMPILER + [self.src_fn])
+            return ret
         except OSError as e:
             print "[!] Problem while running compiler"
             print "[!] OS error({0}): {1}".format(e.errno, e.strerror)
             print "[!] Check if {0} is instaled".format(COMPILER[0])
             exit(1)
-            
-        if ret == 0:
-            cmd = ['./a.out']
+        
+    def run(self):
+        self._write()
+        cmd = ['./a.out']
+        if self._compile() == 0:
             try:
                 ret = call(cmd)
             except OSError as e:
@@ -87,5 +59,48 @@ def main():
                 print "[!] OS error({0}): {1}".format(e.errno, e.strerror)
 
 
+class Fytran():
+    CMDS = """!e OR !! - compile and execute expressions
+!l       - print expressions
+!d       - delete an expressions
+!c       - clear the list of expressions
+!q       - quit"""
+
+    def __init__(self):
+        self.stmts = list()
+
+    def _list(self):
+        for idx, s in enumerate(self.stmts):
+            print idx, ':', s
+
+    def _help(self):
+        print 'available: Fortran/!!/!c/!d/!l/!h/!q'
+
+    def run(self):
+        print self.CMDS
+        while True:
+            while True:
+                line = raw_input('>>> ')
+                if line == '!e' or line == '!!':
+                    s = Source(self.stmts)
+                    s.run()
+                elif line == '!c':
+                    self.stmts = list()
+                elif line == '!l':
+                    self._list()
+                elif line == '!d':
+                    self._list()
+                    idx = int(raw_input('idx to delete: '))
+                    self.stmts.pop(idx)
+                elif line == '!h':
+                    self._help()
+                elif line == '!q':
+                    exit(0)
+                else:
+                    self.stmts.append(line)
+
+
 if __name__ == '__main__':
-    main()
+    i = Fytran()
+    i.run()
+
