@@ -18,7 +18,7 @@ It maintains a list of FORTRAN statements, and:
 Example
 -------
 
-    $ ./fytran
+    $ python -m fytran
     !e OR !! - compile and execute expressions
     !l       - print expressions
     !d       - delete an expressions
