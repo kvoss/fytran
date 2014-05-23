@@ -3,7 +3,7 @@ from distutils.core import setup
 CONFIG = {
     'name'             : 'fytran',
     'description'      : 'A simple REPL Fortran utility',
-    'version'          : '0.2.0',
+    'version'          : '0.2.1',
 
     'author'           : 'Krzysztof Voss',
     'author_email'     : 'k.voss@usask.ca',
@@ -19,7 +19,10 @@ CONFIG = {
         'License :: OSI Approved :: BSD License',
         'Programming Language :: Fortran',
         'Programming Language :: Python',
-        'Programming Language :: Python :: 2.7', ],
+        'Programming Language :: Python :: 2.7', 
+        'Topic :: Scientific/Engineering',
+        'Topic :: Software Development',
+        ],
     }
 
 
