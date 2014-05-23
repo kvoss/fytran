@@ -1,6 +1,6 @@
-#!/usr/bin/python
-"""
-Author: Krzysztof Voss <shobbo@gmail.com>
+""" Simple FORTRAN REPL
+
+Author: Krzysztof Voss <k.voss@usask.ca>
 """
 
 from string import Template
@@ -8,6 +8,8 @@ from subprocess import call
 from sys import exit
 import readline
 
+# magic
+COMPILER = ['gfortran', '-g', '-Wall']
 
 class FortranTemplate(Template):
     program_tpl = """\
@@ -28,9 +30,9 @@ class FortranTemplate(Template):
         tpl_txt = self.substitute({ 'statements' : stmts_txt, })
         return tpl_txt
 
-COMPILER = ['gfortran', '-g', '-Wall']
 class Source:
     src_fn = 'fytran.f'
+    
     def __init__(self, stmts):
         self.src = str(FortranTemplate(stmts))
 
@@ -50,6 +52,7 @@ class Source:
         
     def run(self):
         self._write()
+        #TODO: too ugly
         cmd = ['./a.out']
         if self._compile() == 0:
             try:
@@ -60,10 +63,12 @@ class Source:
 
 
 class Fytran():
-    CMDS = """!e OR !! - compile and execute expressions
+    CMDS = """\
+!!       - compile and execute expressions
 !l       - print expressions
 !d       - delete an expressions
 !c       - clear the list of expressions
+!u       - remove last stmt
 !q       - quit"""
 
     def __init__(self):
@@ -74,7 +79,8 @@ class Fytran():
             print idx, ':', s
 
     def _help(self):
-        print 'available: Fortran/!!/!c/!d/!l/!h/!q'
+        #print 'available: Fortran/!!/!c/!d/!l/!h/!u/!q'
+        print self.CMDS
 
     def run(self):
         print self.CMDS
@@ -91,9 +97,17 @@ class Fytran():
                 elif line == '!d':
                     self._list()
                     idx = int(raw_input('idx to delete: '))
-                    self.stmts.pop(idx)
+                    try:
+                        self.stmts.pop(idx)
+                    except IndexError:
+                        pass
                 elif line == '!h':
                     self._help()
+                elif line == '!u':
+                    try:
+                        self.stmts.pop()
+                    except IndexError:
+                        pass
                 elif line == '!q':
                     exit(0)
                 else:
