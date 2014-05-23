@@ -12,6 +12,7 @@ It maintains a list of FORTRAN statements, and:
 * compiles the file
 * runs the file and display its output
 * returns to the prompt
+* uses readline library to provide history of input
 
 
 Example
@@ -38,3 +39,4 @@ Remarks
 The FORTRAN template uses:
 
     implicit real*8 (a-h, o-z)
+
